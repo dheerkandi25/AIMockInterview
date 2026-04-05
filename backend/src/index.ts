@@ -27,11 +27,14 @@ app.get('/', (req: Request, res: Response) => {
     res.send('AI Mock Interviewer API is running (PostgreSQL)');
 });
 
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/sessions', sessionRoutes);
-app.use('/api/reports', reportRoutes);
-app.use('/api/resume', resumeRoutes);
+// Keep both route styles for local/dev and Vercel service routing.
+// Local default:    /api/auth, /api/users, ...
+// Vercel prefix:    /_/backend/api + /auth, /users, ...
+app.use(['/api/auth', '/auth'], authRoutes);
+app.use(['/api/users', '/users'], userRoutes);
+app.use(['/api/sessions', '/sessions'], sessionRoutes);
+app.use(['/api/reports', '/reports'], reportRoutes);
+app.use(['/api/resume', '/resume'], resumeRoutes);
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
